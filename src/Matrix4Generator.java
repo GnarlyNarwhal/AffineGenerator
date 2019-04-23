@@ -140,6 +140,239 @@ public class Matrix4Generator {
 		}
 		return method.append("\treturn target;\n").toString();
 	}
+
+	/////////// SHEARS ///////////
+	
+	public static String shearMethods() {
+		StringBuilder method = new StringBuilder();
+		String[] multiplier1 = new String[] {
+			"sinAxis * tanShear * cosAxis", "-cosAxis * tanShear * cosAxis", "0", "0",
+			"sinAxis * tanShear * sinAxis", "-cosAxis * tanShear * sinAxis", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier2 = new String[] {
+			"unitAxis.v[1] * tanShear * unitAxis.v[0]", "-unitAxis.v[0] * tanShear * unitAxis.v[0]", "0", "0",
+			"unitAxis.v[1] * tanShear * unitAxis.v[1]", "-unitAxis.v[0] * tanShear * unitAxis.v[1]", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier3 = new String[] {
+			"sinAxis * tanShear * cosAxis", "-cosAxis * tanShear * cosAxis", "0", "0",
+			"sinAxis * tanShear * sinAxis", "-cosAxis * tanShear * sinAxis", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier4 = new String[] {
+			"unitAxis.v[1] * tanShear * unitAxis.v[0]", "-unitAxis.v[0] * tanShear * unitAxis.v[0]", "0", "0",
+			"unitAxis.v[1] * tanShear * unitAxis.v[1]", "-unitAxis.v[0] * tanShear * unitAxis.v[1]", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier5 = new String[] {
+			"1", "-tan(angle)", "0", "0",
+			"0", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier6 = new String[] {
+			"1", "-shear.v[1] / shear.v[0]", "0", "0",
+			"0", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier7 = new String[] {
+			"1", "0", "0", "0",
+			"tan(angle)", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier8 = new String[] {
+			"1", "0", "0", "0",
+			"shear.v[1] / shear.v[0]", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		method.append("GenoMatrix<4, 4, T> & shear2D(T axisAngle, T shearAngle) {\n\tauto sinAxis = sin(axisAngle);\n\tauto cosAxis = cos(axisAngle);\n\tauto tanShear = tan(shearAngle);\n")
+		      .append(generateDMMethod(multiplier1))
+		      .append("}\n\n");
+		method.append("GenoMatrix<4, 4, T> & shear2D(const GenoVector<2, T> & axis, T shearAngle) {\n\tauto unitAxis = normalize(axis);\n\tauto tanShear = tan(shearAngle);\n")
+		      .append(generateDMMethod(multiplier2))
+		      .append("}\n\n");
+		method.append("GenoMatrix<4, 4, T> & shear2D(T axisAngle,const GenoVector<2, T> & shear) {\n\tauto sinAxis = sin(axisAngle);\n\tauto cosAxis = cos(axisAngle);\n\tauto tanShear = shear.v[1] / shear.v[0];\n")
+		      .append(generateDMMethod(multiplier3))
+		      .append("}\n\n");
+		method.append("GenoMatrix<4, 4, T> & shear2D(const GenoVector<2, T> & axis, const GenoVector<2, T> & shear) {\n\tauto unitAxis = normalize(axis);\n\tauto tanShear = shear.v[1] / shear.v[0];\n")
+		      .append(generateDMMethod(multiplier4))
+		      .append("}\n\n");
+		method.append("GenoMatrix<4, 4, T> & shear2DX(T angle) {\n")
+		      .append(generateDMMethod(multiplier5))
+		      .append("}\n\n");
+		method.append("GenoMatrix<4, 4, T> & shear2DX(const GenoVector<2, T> & shear) {\n")
+		      .append(generateDMMethod(multiplier6))
+		      .append("}\n\n");
+		method.append("GenoMatrix<4, 4, T> & shear2DY(T angle) {\n")
+		      .append(generateDMMethod(multiplier7))
+		      .append("}\n\n");
+		method.append("GenoMatrix<4, 4, T> & shear2DY(const GenoVector<2, T> & shear) {\n")
+		      .append(generateDMMethod(multiplier8))
+		      .append("}\n\n");
+		return method.toString();
+	}
+	
+	public static String shearFunctions() {
+		StringBuilder method = new StringBuilder();
+		String[] multiplier1 = new String[] {
+			"sinAxis * tanShear * cosAxis", "-cosAxis * tanShear * cosAxis", "0", "0",
+			"sinAxis * tanShear * sinAxis", "-cosAxis * tanShear * sinAxis", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier2 = new String[] {
+			"unitAxis.v[1] * tanShear * unitAxis.v[0]", "-unitAxis.v[0] * tanShear * unitAxis.v[0]", "0", "0",
+			"unitAxis.v[1] * tanShear * unitAxis.v[1]", "-unitAxis.v[0] * tanShear * unitAxis.v[1]", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier3 = new String[] {
+			"sinAxis * tanShear * cosAxis", "-cosAxis * tanShear * cosAxis", "0", "0",
+			"sinAxis * tanShear * sinAxis", "-cosAxis * tanShear * sinAxis", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier4 = new String[] {
+			"unitAxis.v[1] * tanShear * unitAxis.v[0]", "-unitAxis.v[0] * tanShear * unitAxis.v[0]", "0", "0",
+			"unitAxis.v[1] * tanShear * unitAxis.v[1]", "-unitAxis.v[0] * tanShear * unitAxis.v[1]", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier5 = new String[] {
+			"1", "-tan(angle)", "0", "0",
+			"0", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier6 = new String[] {
+			"1", "-shear.v[1] / shear.v[0]", "0", "0",
+			"0", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier7 = new String[] {
+			"1", "0", "0", "0",
+			"tan(angle)", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier8 = new String[] {
+			"1", "0", "0", "0",
+			"shear.v[1] / shear.v[0]", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> shear2D(const GenoMatrix<4, 4, T> & matrix, T axisAngle, T shearAngle) {\n\tauto sinAxis = sin(axisAngle);\n\tauto cosAxis = cos(axisAngle);\n\tauto tanShear = tan(shearAngle);\n")
+		      .append(generateDMFunction(multiplier1))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> shear2D(const GenoMatrix<4, 4, T> & matrix, const GenoVector<2, T> & axis, T shearAngle) {\n\tauto unitAxis = normalize(axis);\n\tauto tanShear = tan(shearAngle);\n")
+		      .append(generateDMFunction(multiplier2))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> shear2D(const GenoMatrix<4, 4, T> & matrix, T axisAngle,const GenoVector<2, T> & shear) {\n\tauto sinAxis = sin(axisAngle);\n\tauto cosAxis = cos(axisAngle);\n\tauto tanShear = shear.v[1] / shear.v[0];\n")
+		      .append(generateDMFunction(multiplier3))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> shear2D(const GenoMatrix<4, 4, T> & matrix, const GenoVector<2, T> & axis, const GenoVector<2, T> & shear) {\n\tauto unitAxis = normalize(axis);\n\tauto tanShear = shear.v[1] / shear.v[0];\n")
+		      .append(generateDMFunction(multiplier4))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> shear2DX(const GenoMatrix<4, 4, T> & matrix, T angle) {\n")
+		      .append(generateDMFunction(multiplier5))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> shear2DX(const GenoMatrix<4, 4, T> & matrix, const GenoVector<2, T> & shear) {\n")
+		      .append(generateDMFunction(multiplier6))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> shear2DY(const GenoMatrix<4, 4, T> & matrix, T angle) {\n")
+		      .append(generateDMFunction(multiplier7))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> shear2DY(const GenoMatrix<4, 4, T> & matrix, const GenoVector<2, T> & shear) {\n")
+		      .append(generateDMFunction(multiplier8))
+		      .append("}\n\n");
+		return method.toString();
+	}
+	
+	public static String shearTargetFunctions() {
+		StringBuilder method = new StringBuilder();
+		String[] multiplier1 = new String[] {
+			"sinAxis * tanShear * cosAxis", "-cosAxis * tanShear * cosAxis", "0", "0",
+			"sinAxis * tanShear * sinAxis", "-cosAxis * tanShear * sinAxis", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier2 = new String[] {
+			"unitAxis.v[1] * tanShear * unitAxis.v[0]", "-unitAxis.v[0] * tanShear * unitAxis.v[0]", "0", "0",
+			"unitAxis.v[1] * tanShear * unitAxis.v[1]", "-unitAxis.v[0] * tanShear * unitAxis.v[1]", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier3 = new String[] {
+			"sinAxis * tanShear * cosAxis", "-cosAxis * tanShear * cosAxis", "0", "0",
+			"sinAxis * tanShear * sinAxis", "-cosAxis * tanShear * sinAxis", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier4 = new String[] {
+			"unitAxis.v[1] * tanShear * unitAxis.v[0]", "-unitAxis.v[0] * tanShear * unitAxis.v[0]", "0", "0",
+			"unitAxis.v[1] * tanShear * unitAxis.v[1]", "-unitAxis.v[0] * tanShear * unitAxis.v[1]", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier5 = new String[] {
+			"1", "-tan(angle)", "0", "0",
+			"0", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier6 = new String[] {
+			"1", "-shear.v[1] / shear.v[0]", "0", "0",
+			"0", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier7 = new String[] {
+			"1", "0", "0", "0",
+			"tan(angle)", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		String[] multiplier8 = new String[] {
+			"1", "0", "0", "0",
+			"shear.v[1] / shear.v[0]", "1", "0", "0",
+			"0", "0", "1", "0",
+			"0", "0", "0", "1"
+		};
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> & shear2D(const GenoMatrix<4, 4, T> & matrix, T axisAngle, T shearAngle, GenoMatrix<4, 4, T> & target) {\n\tauto sinAxis = sin(axisAngle);\n\tauto cosAxis = cos(axisAngle);\n\tauto tanShear = tan(shearAngle);\n")
+		      .append(generateDMTargetFunction(multiplier1))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> & shear2D(const GenoMatrix<4, 4, T> & matrix, const GenoVector<2, T> & axis, T shearAngle, GenoMatrix<4, 4, T> & target) {\n\tauto unitAxis = normalize(axis);\n\tauto tanShear = tan(shearAngle);\n")
+		      .append(generateDMTargetFunction(multiplier2))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> & shear2D(const GenoMatrix<4, 4, T> & matrix, T axisAngle,const GenoVector<2, T> & shear, GenoMatrix<4, 4, T> & target) {\n\tauto sinAxis = sin(axisAngle);\n\tauto cosAxis = cos(axisAngle);\n\tauto tanShear = shear.v[1] / shear.v[0];\n")
+		      .append(generateDMTargetFunction(multiplier3))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> & shear2D(const GenoMatrix<4, 4, T> & matrix, const GenoVector<2, T> & axis, const GenoVector<2, T> & shear, GenoMatrix<4, 4, T> & target) {\n\tauto unitAxis = normalize(axis);\n\tauto tanShear = shear.v[1] / shear.v[0];\n")
+		      .append(generateDMTargetFunction(multiplier4))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> & shear2DX(const GenoMatrix<4, 4, T> & matrix, T angle, GenoMatrix<4, 4, T> & target) {\n")
+		      .append(generateDMTargetFunction(multiplier5))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> & shear2DX(const GenoMatrix<4, 4, T> & matrix, const GenoVector<2, T> & shear, GenoMatrix<4, 4, T> & target) {\n")
+		      .append(generateDMTargetFunction(multiplier6))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> & shear2DY(const GenoMatrix<4, 4, T> & matrix, T angle, GenoMatrix<4, 4, T> & target) {\n")
+		      .append(generateDMTargetFunction(multiplier7))
+		      .append("}\n\n");
+		method.append("template <typename T>\nGenoMatrix<4, 4, T> & shear2DY(const GenoMatrix<4, 4, T> & matrix, const GenoVector<2, T> & shear, GenoMatrix<4, 4, T> & target) {\n")
+		      .append(generateDMTargetFunction(multiplier8))
+		      .append("}\n\n");
+		return method.toString();
+	}
 	
 	/////////// TRANSLATES ///////////
 	

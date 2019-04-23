@@ -5,7 +5,7 @@ import java.io.IOException;
 public class Main {
 	
 	public static void main(String[] args) {
-		String methods = Utils.feedPermutations(Matrix4Generator::scaleTargetFunctions);
+		String methods = Matrix4Generator.shearTargetFunctions();
 		try {
 			FileWriter output = new FileWriter(new File("output.txt"));
 			output.write(methods);
